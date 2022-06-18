@@ -18,12 +18,20 @@ async function run() {
     try {
         await client.connect();
         const shoeCollection = client.db('panda_commerce').collection('shoes');
+        const jacketCollection = client.db('panda_commerce').collection('jackets');
 
         app.get('/shoe', async (req, res) => {
             const query = {};
             const cursor = shoeCollection.find(query);
             const shoes = await cursor.toArray();
             res.send(shoes);
+        });
+
+        app.get('/jacket', async (req, res) => {
+            const query = {};
+            const cursor = jacketCollection.find(query);
+            const jackets = await cursor.toArray();
+            res.send(jackets);
         });
 
     }
