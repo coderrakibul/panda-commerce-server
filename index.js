@@ -17,29 +17,21 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 async function run() {
     try {
         await client.connect();
-        const shoeCollection = client.db('panda_commerce').collection('shoes');
-        const jacketCollection = client.db('panda_commerce').collection('jackets');
-        const bagCollection = client.db('panda_commerce').collection('bags');
+        const itemCollection = client.db('panda_commerce').collection('items');
+        const productCollection = client.db('panda_commerce').collection('products');
 
-        app.get('/shoe', async (req, res) => {
+        app.get('/item', async (req, res) => {
             const query = {};
-            const cursor = shoeCollection.find(query);
-            const shoes = await cursor.toArray();
-            res.send(shoes);
+            const cursor = itemCollection.find(query);
+            const items = await cursor.toArray();
+            res.send(items);
         });
 
-        app.get('/jacket', async (req, res) => {
+        app.get('/product', async (req, res) => {
             const query = {};
-            const cursor = jacketCollection.find(query);
-            const jackets = await cursor.toArray();
-            res.send(jackets);
-        });
-
-        app.get('/bag', async (req, res) => {
-            const query = {};
-            const cursor = bagCollection.find(query);
-            const bags = await cursor.toArray();
-            res.send(bags);
+            const cursor = productCollection.find(query);
+            const products = await cursor.toArray();
+            res.send(products);
         });
 
     }
