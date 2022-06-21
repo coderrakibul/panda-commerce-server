@@ -67,7 +67,6 @@ async function run() {
                 return res.send({ success: false, order: exists })
             }
             const result = await orderCollection.insertOne(order);
-            console.log(result)
             return res.send({ success: true, result });
         });
 
