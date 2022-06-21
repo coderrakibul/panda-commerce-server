@@ -61,7 +61,7 @@ async function run() {
 
         app.post('/order', async (req, res) => {
             const order = req.body;
-            const query = { productId: order._id, productName: order.name }
+            const query = { productId: order._id }
             const exists = await orderCollection.findOne(query);
             if (exists) {
                 return res.send({ success: false, order: exists })
