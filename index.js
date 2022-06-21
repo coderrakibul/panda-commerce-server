@@ -19,6 +19,7 @@ async function run() {
         await client.connect();
         const itemCollection = client.db('panda_commerce').collection('items');
         const productCollection = client.db('panda_commerce').collection('products');
+        const orderCollection = client.db('panda_commerce').collection('orders');
 
         app.get('/item', async (req, res) => {
             const query = {};
@@ -48,15 +49,34 @@ async function run() {
             res.send({ count });
         });
 
-        app.post('/productByKeys', async(req, res)=> {
+        app.post('/productByKeys', async (req, res) => {
             const keys = req.body;
             const ids = keys.map(id => ObjectId(id));
-            const query = {_id: {$in: ids}};
+            const query = { _id: { $in: ids } };
             const cursor = productCollection.find(query);
             const products = await cursor.toArray();
             res.send(products);
             console.log(keys);
-        })
+        });
+
+        app.post('/order', async (req, res) => {
+            const order = req.body;
+            const query = { productId: order._id, productName: order.name }
+            const exists = await orderCollection.findOne(query);
+            if (exists) {
+                return res.send({ success: false, order: exists })
+            }
+            const result = await orderCollection.insertOne(order);
+            console.log(result)
+            return res.send({ success: true, result });
+        });
+
+        app.get('/order', async (req, res) => {
+            const query = {};
+            const cursor = orderCollection.find(query);
+            const orders = await cursor.toArray();
+            res.send(orders);
+        });
 
     }
 
