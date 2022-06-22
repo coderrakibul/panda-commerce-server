@@ -101,7 +101,15 @@ async function run() {
             const query = { _id: ObjectId(id) };
             const result = await cartCollection.deleteOne(query);
             res.send(result);
-        })
+        });
+
+        app.delete('/cart', async (req, res) => {
+            const user = req.query.user;
+            const query = { user: user };
+            const result = await cartCollection.deleteMany(query);
+            res.send(result);
+
+        });
 
     }
 
