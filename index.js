@@ -19,6 +19,7 @@ async function run() {
         await client.connect();
         const itemCollection = client.db('panda_commerce').collection('items');
         const productCollection = client.db('panda_commerce').collection('products');
+        const cartCollection = client.db('panda_commerce').collection('carts');
         const orderCollection = client.db('panda_commerce').collection('orders');
 
         app.get('/item', async (req, res) => {
@@ -58,6 +59,17 @@ async function run() {
             res.send(products);
             console.log(keys);
         });
+
+        app.post('/cart', async (req, res) => {
+            const cart = req.body;
+            const query = { model: cart.model, user: cart.user };
+            const exists = await cartCollection.findOne(query);
+            if(exists){
+                return res.send({ success: false, cart: exists })
+            }
+            const result = await cartCollection.insertOne(cart);
+            return res.send({success: true, result});
+        })
 
         app.post('/order', async (req, res) => {
             const order = req.body;
