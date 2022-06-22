@@ -78,24 +78,6 @@ async function run() {
             res.send(carts);
         });
 
-        app.post('/order', async (req, res) => {
-            const order = req.body;
-            const query = { productId: order._id }
-            const exists = await orderCollection.findOne(query);
-            if (exists) {
-                return res.send({ success: false, order: exists })
-            }
-            const result = await orderCollection.insertOne(order);
-            return res.send({ success: true, result });
-        });
-
-        app.get('/order', async (req, res) => {
-            const query = {};
-            const cursor = orderCollection.find(query);
-            const orders = await cursor.toArray();
-            res.send(orders);
-        });
-
         app.delete('/cart/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
