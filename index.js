@@ -64,12 +64,19 @@ async function run() {
             const cart = req.body;
             const query = { model: cart.model, user: cart.user };
             const exists = await cartCollection.findOne(query);
-            if(exists){
+            if (exists) {
                 return res.send({ success: false, cart: exists })
             }
             const result = await cartCollection.insertOne(cart);
-            return res.send({success: true, result});
-        })
+            return res.send({ success: true, result });
+        });
+
+        app.get('/cart', async (req, res) => {
+            const user = req.query.user;
+            const query = { user: user };
+            const carts = await cartCollection.find(query).toArray();
+            res.send(carts);
+        });
 
         app.post('/order', async (req, res) => {
             const order = req.body;
