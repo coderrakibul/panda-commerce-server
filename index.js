@@ -71,12 +71,20 @@ async function run() {
             return res.send({ success: true, result });
         });
 
+        app.post('/order', async (req, res) => {
+            const order = req.body;
+            const orders = await orderCollection.insertOne(order);
+            return res.send({ success: true, orders });
+        });
+
         app.get('/cart', async (req, res) => {
             const user = req.query.user;
             const query = { user: user };
             const carts = await cartCollection.find(query).toArray();
             res.send(carts);
         });
+
+
 
         app.delete('/cart/:id', async (req, res) => {
             const id = req.params.id;
