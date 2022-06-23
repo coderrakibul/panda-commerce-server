@@ -80,6 +80,11 @@ async function run() {
 
         app.post('/order', async (req, res) => {
             const order = req.body;
+            const query = { model: order.model, user: order.user };
+            const exists = await orderCollection.findOne(query);
+            if (exists) {
+                return res.send({ success: false, order: exists })
+            }
             const orders = await orderCollection.insertOne(order);
             return res.send({ success: true, orders });
         });
