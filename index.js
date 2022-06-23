@@ -21,6 +21,7 @@ async function run() {
         const productCollection = client.db('panda_commerce').collection('products');
         const cartCollection = client.db('panda_commerce').collection('carts');
         const orderCollection = client.db('panda_commerce').collection('orders');
+        const paymentCollection = client.db('panda_commerce').collection('payments');
 
         app.get('/item', async (req, res) => {
             const query = {};
@@ -94,6 +95,12 @@ async function run() {
             const query = { user: user };
             const orders = await orderCollection.find(query).toArray();
             res.send(orders);
+        });
+
+        app.post('/payment', async (req, res) => {
+            const payment = req.body;
+            const result = await paymentCollection.insertOne(payment);
+            res.send(result);
         });
 
 
