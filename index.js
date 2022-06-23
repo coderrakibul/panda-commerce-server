@@ -97,18 +97,7 @@ async function run() {
             res.send(orders);
         });
 
-        app.post('/payment', async (req, res) => {
-            const payment = req.body;
-            const result = await paymentCollection.insertOne(payment);
-            res.send(result);
-        });
 
-        app.get('/payment', async (req, res) => {
-            const user = req.query.user;
-            const query = { user: user };
-            const result = await orderCollection.find(query).toArray();
-            res.send(result);
-        });
 
 
         app.delete('/cart/:id', async (req, res) => {
