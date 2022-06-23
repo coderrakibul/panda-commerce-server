@@ -103,6 +103,12 @@ async function run() {
             res.send(result);
         });
 
+        app.get('/payment', async (req, res) => {
+            const user = req.query.user;
+            const query = { user: user };
+            const result = await orderCollection.find(query).toArray();
+            res.send(result);
+        });
 
 
         app.delete('/cart/:id', async (req, res) => {
@@ -117,7 +123,6 @@ async function run() {
             const query = { user: user };
             const result = await cartCollection.deleteMany(query);
             res.send(result);
-
         });
 
     }
