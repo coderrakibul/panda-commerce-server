@@ -102,8 +102,6 @@ async function run() {
         });
 
         app.post('/checkout', async (req, res) => {
-            console.log(req.body)
-
             let error, status
             try {
                 const { product, token } = req.body;
@@ -135,12 +133,10 @@ async function run() {
                         key,
                     }
                 );
-                console.log("Charge:", { charge });
                 status = "success";
 
             }
             catch (error) {
-                console.log(error);
                 status = "failure";
             }
             res.json({ error, status });
