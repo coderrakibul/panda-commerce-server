@@ -132,6 +132,13 @@ async function run() {
             res.send({ clientSecret: paymentIntent.client_secret })
         });
 
+        app.get('/history', async (req, res) => {
+            const user = req.query.user;
+            const query = { user: user };
+            const history = await paymentCollection.find(query).toArray();
+            res.send(history);
+        });
+
 
 
         app.delete('/order/:id', async (req, res) => {
